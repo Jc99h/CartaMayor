@@ -2,6 +2,8 @@ package CartaMayor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * This class is used for ...
@@ -27,6 +29,8 @@ public class GUIGridBagLayout extends JFrame {
 	private ImageIcon imagenCarta;
 	private JTextArea mensajeSalida, resultadosCartas;
 	private Escucha escucha;
+	private ModelCartaMayor modelCartaMayor;
+	private Baraja baraja;
 	//private ModelCraps modelCraps;
 
 	/**
@@ -54,6 +58,9 @@ public class GUIGridBagLayout extends JFrame {
 		GridBagConstraints constraints = new GridBagConstraints();
 
 		//Create Listener Object and Control Object
+		escucha = new Escucha();
+		modelCartaMayor = new ModelCartaMayor();
+
 		//Set up JComponents
 		headerProject = new Header("Mesa Juego Carta Mayor", Color.BLACK);
 		constraints.gridx=0;
@@ -63,7 +70,7 @@ public class GUIGridBagLayout extends JFrame {
 		this.add(headerProject,constraints);
 
 		ayuda = new JButton("?");
-		//ayuda.addActionListener(escucha);
+		ayuda.addActionListener(escucha);
 		constraints.gridx=0;
 		constraints.gridy=1;
 		constraints.gridwidth=1;
@@ -118,7 +125,7 @@ public class GUIGridBagLayout extends JFrame {
 		add(resultadosCartas, constraints);
 
 		sacarCarta = new JButton("Sacar Carta");
-		//sacarCarta.addActionListener(escucha);
+		sacarCarta.addActionListener(escucha);
 		constraints.gridx=1;
 		constraints.gridy=3;
 		constraints.gridwidth=1;
@@ -153,8 +160,23 @@ public class GUIGridBagLayout extends JFrame {
 	/**
 	 * inner class that extends an Adapter Class or implements Listeners used by GUI class
 	 */
-	private class Escucha
+	private class Escucha implements ActionListener
 	{
-
+		@Override
+		public void actionPerformed(ActionEvent objectEvent)
+		{
+			if(objectEvent.getSource()==sacarCarta)
+			{
+				imagenCarta = new ImageIcon(getClass().getResource("/resources/"+modelCartaMayor.devolverValorCarta()+"_"+modelCartaMayor.devolverValorPalo()+".png"));
+				cartaJugador.setIcon(imagenCarta);
+      }
+			else
+			{
+				if(objectEvent.getSource()==ayuda)
+				{
+					JOptionPane.showMessageDialog(null, MENSAJE_INICIO);
+				}
+			}
+		}
 	}
 }
